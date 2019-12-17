@@ -16,7 +16,7 @@ after_success:
 # Log in to teh docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push pvrak/multi-client
-  - docker push pvrax/multi-nginx
+  - docker push pvrak/multi-nginx
   - docker push pvrak/multi-server
   - docker push pvrak/multi-worker
 
