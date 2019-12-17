@@ -10,7 +10,7 @@ script:
 
 after_success:
   - docker build -t pvrak/multi-client ./client
-  - docker build -t pvrax/multi-nginx ./nginx
+  - docker build -t pvrak/multi-nginx ./nginx
   - docker build -t pvrak/multi-server ./server
   - docker build -t pvrak/multi-worker ./worker
 # Log in to teh docker CLI
