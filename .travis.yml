@@ -1,0 +1,35 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t pvrak/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true pvrak/react-test npm test
+
+after_success:
+  - docker build -t pvrak/multi-client ./client
+  - docker build -t pvrax/multi-nginx ./nginx
+  - docker build -t pvrak/multi-server ./server
+  - docker build -t pvrak/multi-worker ./worker
+# Log in to teh docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push pvrak/multi-client
+  - docker push pvrax/multi-nginx
+  - docker push pvrak/multi-server
+  - docker push pvrak/multi-worker
+
+#deploy to AWS
+#deploy:
+#  edge: true
+#  provider: elasticbeanstalk
+#  region: "us-west-2"
+#  app: "docker"
+#  env: "Docker-env"
+#  bucket_name: "elasticbeanstalk-us-west-2-306476627547"
+#  bucket_path: "docker"
+#  on:
+#    branch: master
+#  access_key_id: $AWS_ACCESS_KEY
+#  secret_access_key: $AWS_SECRET_KEY
